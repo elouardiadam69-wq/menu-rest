@@ -1,0 +1,99 @@
+
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <meta name="description"
+        content="Consultez le menu de notre restaurant en français, arabe et anglais.">
+
+  <title>Restaurant Al Baraka | Menu</title>
+
+  <link rel="stylesheet" href="style.css">
+
+  <!-- Police adaptée à l'arabe -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&family=Inter:wght@400;500;600;700&display=swap"
+        rel="stylesheet">
+
+  <script src="script.js" defer></script>
+</head>
+
+<body>
+  <header class="hero">
+    <div class="hero-content">
+      <p class="eyebrow" data-i18n="welcome">
+        BIENVENUE CHEZ NOUS
+      </p>
+
+      <h1 id="restaurant-name">Restaurant Al Baraka</h1>
+
+      <p class="subtitle" data-i18n="subtitle">
+        Cuisine marocaine et saveurs traditionnelles
+      </p>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="menu-heading">
+      <div>
+        <p class="eyebrow" data-i18n="our-menu">NOTRE CARTE</p>
+        <h2 data-i18n="menu-title">Découvrez notre menu</h2>
+      </div>
+
+      <label class="language-control">
+        <span data-i18n="language-label">Langue</span>
+        <select id="language-select" aria-label="Choisir la langue">
+          <option value="fr">🇫🇷 Français</option>
+          <option value="ar">🇲🇦 العربية</option>
+          <option value="en">🇬🇧 English</option>
+        </select>
+      </label>
+    </section>
+
+    <nav id="category-list"
+         class="categories"
+         aria-label="Catégories du menu">
+    </nav>
+
+    <section aria-live="polite">
+      <div class="section-heading">
+        <h2 id="category-title">Tous nos plats</h2>
+        <span id="dish-count"></span>
+      </div>
+
+      <div id="menu-grid" class="menu-grid"></div>
+
+      <p id="empty-message" class="empty-message" hidden>
+        Aucun plat dans cette catégorie.
+      </p>
+    </section>
+
+    <section class="contact-card">
+      <h2 data-i18n="contact-title">Une question ?</h2>
+      <p data-i18n="contact-description">
+        Contactez-nous pour plus d'informations.
+      </p>
+      <a id="contact-link"
+         class="contact-button"
+         href="https://wa.me/212600000000"
+         target="_blank"
+         rel="noopener noreferrer">
+        <span data-i18n="contact-button">Nous contacter sur WhatsApp</span>
+      </a>
+    </section>
+  </main>
+
+  <footer>
+    <p>
+      © <span id="current-year"></span>
+      <span id="footer-name">Restaurant Al Baraka</span>
+    </p>
+    <p data-i18n="footer-note">
+      Les prix sont indiqués en dirhams marocains (DH).
+    </p>
+  </footer>
+</body>
+</html>
