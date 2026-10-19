@@ -965,30 +965,31 @@ if (orderForm) {
     submitButton.disabled = true;
     message.textContent = "Envoi de votre commande...";
 
-    try {
-      const { error } = await supabaseClient
+   
+try {
+  const { data: sessionData } = await supabaseClient.auth.getSession();
 
-const { data: sessionData } = await supabaseClient.auth.getSession();
+  console.log(  
+    "Statut utilisateur :",
+        sessionData.session ? "authenticated" : "anon"
+      );
+      
+  const { error } = await supabaseClient
+    .from("orders")
+    .insert([{
+      order_type: orderType,
+      customer_name: customerName,
+      phone,
+      address,
+      table_number: tableNumber,
+      items,
+      total,
+      notes: notes || null
+    }]);
 
-console.log(
-   "Statut utilisateur :",
-    sessionData.session ? "authenticated" : "anon"
-  );
-const { error } = await supabaseClient
-.from("orders")
-        .from("orders")
-        .insert([{
-          order_type: orderType,
-          customer_name: customerName,
-          phone,
-          address,
-          table_number: tableNumber,
-          items,
-          total,
-          notes: notes || null
-        }]);
+  if (error) throw error;
 
-      if (error) throw error;
+
 
       cart.clear();
       renderCart();
