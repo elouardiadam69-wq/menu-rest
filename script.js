@@ -1,422 +1,779 @@
 
-"use strict";
-
-/* =========================================
-   1. INFORMATIONS DU RESTAURANT
-   ========================================= */
-
-const restaurant = {
-  name: "Restaurant Al Baraka",
-  whatsapp: "212600000000"
-};
-
-/*
-  Remplace le numéro WhatsApp par celui du restaurant.
-  Format international : indicatif du pays + numéro,
-  sans le signe +, sans espaces.
-*/
-
-
-/* =========================================
-   2. TRADUCTIONS DE L'INTERFACE
-   ========================================= */
-
 const translations = {
   fr: {
-    welcome: "BIENVENUE CHEZ NOUS",
-    subtitle: "Cuisine marocaine et saveurs traditionnelles",
-    "our-menu": "NOTRE CARTE",
-    "menu-title": "Découvrez notre menu",
-    "language-label": "Langue",
-    all: "Tous les plats",
-    "contact-title": "Une question ?",
-    "contact-description": "Contactez-nous pour plus d'informations.",
-    "contact-button": "Nous contacter sur WhatsApp",
-    "footer-note": "Les prix sont indiqués en dirhams marocains (DH).",
-    dishes: "plats",
+    language: "Langue",
+    brand: "🍽️ Le Délice",
+    subtitle: "Bienvenue chez nous",
+    title: "Le goût du bonheur",
+    description: "Des ingrédients frais, des saveurs authentiques et des moments délicieux.",
+    explore: "Découvrir le menu",
+    menuEyebrow: "Notre sélection",
+    menuTitle: "Notre menu",
+    menuDescription: "Préparé avec amour, servi avec le sourire.",
+    search: "Rechercher un plat...",
     categories: {
       all: "Tout",
       starters: "Entrées",
       mains: "Plats principaux",
-      drinks: "Boissons",
-      desserts: "Desserts"
-    }
-  },
-
-  ar: {
-    welcome: "مرحبا بكم عندنا",
-    subtitle: "مأكولات مغربية ونكهات تقليدية",
-    "our-menu": "قائمة الطعام",
-    "menu-title": "اكتشفوا قائمتنا",
-    "language-label": "اللغة",
-    all: "جميع الأطباق",
-    "contact-title": "هل لديكم سؤال؟",
-    "contact-description": "اتصلوا بنا للمزيد من المعلومات.",
-    "contact-button": "تواصلوا معنا عبر واتساب",
-    "footer-note": "الأثمنة بالدرهم المغربي.",
-    dishes: "أطباق",
-    categories: {
-      all: "الكل",
-      starters: "المقبلات",
-      mains: "الأطباق الرئيسية",
-      drinks: "المشروبات",
-      desserts: "الحلويات"
-    }
+      desserts: "Desserts",
+      drinks: "Boissons"
+    },
+    empty: "Aucun plat trouvé. Essayez une autre recherche.",
+    footer: "Fait avec ❤️ pour les amoureux de la cuisine.",
+    dishes: [
+      { id: 1, category: "starters", emoji: "🥗", name: "Salade fraîche", description: "Salade fraîche, tomates, concombre et sauce maison.", price: 35 },
+      { id: 2, category: "starters", emoji: "🥣", name: "Soupe du jour", description: "Une soupe maison préparée avec des légumes frais.", price: 25 },
+      { id: 3, category: "starters", emoji: "🥟", name: "Briouates", description: "Délicieux petits feuilletés croustillants.", price: 30 },
+      { id: 4, category: "mains", emoji: "🍗", name: "Tajine de poulet", description: "Poulet mijoté aux olives et au citron confit.", price: 75 },
+      { id: 5, category: "mains", emoji: "🍝", name: "Pâtes à la sauce tomate", description: "Pâtes italiennes et sauce tomate maison.", price: 55 },
+      { id: 6, category: "mains", emoji: "🍔", name: "Burger maison", description: "Burger gourmand, fromage, salade et sauce maison.", price: 65 },
+      { id: 7, category: "desserts", emoji: "🍰", name: "Gâteau au chocolat", description: "Gâteau moelleux au chocolat.", price: 30 },
+      { id: 8, category: "desserts", emoji: "🥞", name: "Crêpes sucrées", description: "Crêpes délicates avec un nappage gourmand.", price: 25 },
+      { id: 9, category: "desserts", emoji: "🍮", name: "Crème caramel", description: "Crème douce avec du caramel fait maison.", price: 22 },
+      { id: 10, category: "drinks", emoji: "🍊", name: "Jus d'orange", description: "Jus d'orange fraîchement pressé.", price: 20 },
+      { id: 11, category: "drinks", emoji: "🍋", name: "Citronnade", description: "Boisson fraîche au citron.", price: 18 },
+      { id: 12, category: "drinks", emoji: "☕", name: "Café", description: "Un café préparé à la demande.", price: 15 }
+    ]
   },
 
   en: {
-    welcome: "WELCOME",
-    subtitle: "Moroccan cuisine and traditional flavours",
-    "our-menu": "OUR MENU",
-    "menu-title": "Discover our menu",
-    "language-label": "Language",
-    all: "All dishes",
-    "contact-title": "Have a question?",
-    "contact-description": "Contact us for more information.",
-    "contact-button": "Contact us on WhatsApp",
-    "footer-note": "Prices are shown in Moroccan dirhams (DH).",
-    dishes: "dishes",
+    language: "Language",
+    brand: "🍽️ The Delight",
+    subtitle: "Welcome to our restaurant",
+    title: "A taste of happiness",
+    description: "Fresh ingredients, authentic flavours and delicious moments.",
+    explore: "Explore the menu",
+    menuEyebrow: "Our selection",
+    menuTitle: "Our Menu",
+    menuDescription: "Made with love, served with a smile.",
+    search: "Search for a dish...",
     categories: {
       all: "All",
       starters: "Starters",
       mains: "Main courses",
-      drinks: "Drinks",
-      desserts: "Desserts"
-    }
+      desserts: "Desserts",
+      drinks: "Drinks"
+    },
+    empty: "No dishes found. Try another search.",
+    footer: "Made with ❤️ for food lovers.",
+    dishes: [
+      { id: 1, category: "starters", emoji: "🥗", name: "Fresh Salad", description: "Fresh salad with tomatoes, cucumber and house dressing.", price: 35 },
+      { id: 2, category: "starters", emoji: "🥣", name: "Soup of the Day", description: "Homemade soup made with fresh vegetables.", price: 25 },
+      { id: 3, category: "starters", emoji: "🥟", name: "Moroccan Briouates", description: "Delicious little crispy pastries.", price: 30 },
+      { id: 4, category: "mains", emoji: "🍗", name: "Chicken Tagine", description: "Slow-cooked chicken with olives and preserved lemon.", price: 75 },
+      { id: 5, category: "mains", emoji: "🍝", name: "Tomato Pasta", description: "Italian pasta with homemade tomato sauce.", price: 55 },
+      { id: 6, category: "mains", emoji: "🍔", name: "Homemade Burger", description: "Tasty burger with cheese, salad and house sauce.", price: 65 },
+      { id: 7, category: "desserts", emoji: "🍰", name: "Chocolate Cake", description: "Soft and delicious chocolate cake.", price: 30 },
+      { id: 8, category: "desserts", emoji: "🥞", name: "Sweet Pancakes", description: "Delicate pancakes with a delicious topping.", price: 25 },
+      { id: 9, category: "desserts", emoji: "🍮", name: "Crème Caramel", description: "Smooth custard with homemade caramel.", price: 22 },
+      { id: 10, category: "drinks", emoji: "🍊", name: "Orange Juice", description: "Freshly squeezed orange juice.", price: 20 },
+      { id: 11, category: "drinks", emoji: "🍋", name: "Lemonade", description: "Refreshing lemon drink.", price: 18 },
+      { id: 12, category: "drinks", emoji: "☕", name: "Coffee", description: "Coffee freshly prepared to order.", price: 15 }
+    ]
+  },
+
+  ar: {
+    language: "اللغة",
+    brand: "🍽️ مطعم اللذة",
+    subtitle: "مرحباً بكم في مطعمنا",
+    title: "مذاق السعادة",
+    description: "مكونات طازجة، نكهات أصيلة ولحظات لذيذة.",
+    explore: "اكتشف القائمة",
+    menuEyebrow: "اختياراتنا",
+    menuTitle: "قائمة الطعام",
+    menuDescription: "نُحضّر أطباقنا بحب ونقدمها بابتسامة.",
+    search: "ابحث عن طبق...",
+    categories: {
+      all: "الكل",
+      starters: "المقبلات",
+      mains: "الأطباق الرئيسية",
+      desserts: "الحلويات",
+      drinks: "المشروبات"
+    },
+    empty: "لم يتم العثور على أي طبق. جرّب البحث مرة أخرى.",
+    footer: "صُنع ❤️ لمحبي الطعام.",
+    dishes: [
+      { id: 1, category: "starters", emoji: "🥗", name: "سلطة طازجة", description: "سلطة طازجة بالطماطم والخيار وصلصة المطعم.", price: 35 },
+      { id: 2, category: "starters", emoji: "🥣", name: "حساء اليوم", description: "حساء منزلي محضر من الخضروات الطازجة.", price: 25 },
+      { id: 3, category: "starters", emoji: "🥟", name: "بريوات مغربية", description: "فطائر مغربية صغيرة ومقرمشة.", price: 30 },
+      { id: 4, category: "mains", emoji: "🍗", name: "طاجين الدجاج", description: "دجاج مطهو مع الزيتون والحامض المصير.", price: 75 },
+      { id: 5, category: "mains", emoji: "🍝", name: "معكرونة بصلصة الطماطم", description: "معكرونة بصلصة الطماطم المحضرة في المطعم.", price: 55 },
+      { id: 6, category: "mains", emoji: "🍔", name: "برغر منزلي", description: "برغر شهي بالجبن والسلطة وصلصة المطعم.", price: 65 },
+      { id: 7, category: "desserts", emoji: "🍰", name: "كعكة الشوكولاتة", description: "كعكة شوكولاتة طرية ولذيذة.", price: 30 },
+      { id: 8, category: "desserts", emoji: "🥞", name: "كريب حلو", description: "كريب رقيق مع إضافات لذيذة.", price: 25 },
+      { id: 9, category: "desserts", emoji: "🍮", name: "كريم كراميل", description: "كريم ناعم مع كراميل محضر في المنزل.", price: 22 },
+      { id: 10, category: "drinks", emoji: "🍊", name: "عصير البرتقال", description: "عصير برتقال طازج.", price: 20 },
+      { id: 11, category: "drinks", emoji: "🍋", name: "ليموناضة", description: "مشروب منعش بالليمون.", price: 18 },
+      { id: 12, category: "drinks", emoji: "☕", name: "قهوة", description: "قهوة محضرة عند الطلب.", price: 15 }
+    ]
   }
 };
 
-
-/* =========================================
-   3. PLATS DU RESTAURANT
-   ========================================= */
-
-const dishes = [
-  {
-    id: 1,
-    category: "starters",
-    price: 25,
-    image: "https://images.unsplash.com/photo-1547592180-85f173990554?auto=format&fit=crop&w=700&q=80",
-    name: {
-      fr: "Salade marocaine",
-      ar: "سلطة مغربية",
-      en: "Moroccan Salad"
-    },
-    description: {
-      fr: "Tomates, concombres et herbes fraîches.",
-      ar: "طماطم وخيار وأعشاب طازجة.",
-      en: "Tomatoes, cucumbers and fresh herbs."
-    }
-  },
-
-  {
-    id: 2,
-    category: "mains",
-    price: 65,
-    image: "https://images.unsplash.com/photo-1511690743698-d9d85f2fbf38?auto=format&fit=crop&w=700&q=80",
-    name: {
-      fr: "Tajine de poulet",
-      ar: "طاجين الدجاج",
-      en: "Chicken Tagine"
-    },
-    description: {
-      fr: "Poulet, olives et citron confit.",
-      ar: "دجاج وزيتون وحامض مصير.",
-      en: "Chicken, olives and preserved lemon."
-    }
-  },
-
-  {
-    id: 3,
-    category: "mains",
-    price: 55,
-    image: "https://images.unsplash.com/photo-1512621776951-a57141f2eefd?auto=format&fit=crop&w=700&q=80",
-    name: {
-      fr: "Couscous aux légumes",
-      ar: "كسكس بالخضروات",
-      en: "Vegetable Couscous"
-    },
-    description: {
-      fr: "Semoule, légumes et bouillon parfumé.",
-      ar: "سميد وخضروات ومرق معطر.",
-      en: "Semolina, vegetables and aromatic broth."
-    }
-  },
-
-  {
-    id: 4,
-    category: "drinks",
-    price: 12,
-    image: "https://images.unsplash.com/photo-1544787219-7f47ccb76574?auto=format&fit=crop&w=700&q=80",
-    name: {
-      fr: "Thé à la menthe",
-      ar: "أتاي بالنعناع",
-      en: "Mint Tea"
-    },
-    description: {
-      fr: "Thé traditionnel à la menthe fraîche.",
-      ar: "شاي تقليدي بالنعناع الطازج.",
-      en: "Traditional tea with fresh mint."
-    }
-  },
-
-  {
-    id: 5,
-    category: "desserts",
-    price: 20,
-    image: "https://images.unsplash.com/photo-1578985545062-69928b1d9587?auto=format&fit=crop&w=700&q=80",
-    name: {
-      fr: "Gâteau du jour",
-      ar: "حلوى اليوم",
-      en: "Cake of the Day"
-    },
-    description: {
-      fr: "Une douceur préparée avec soin.",
-      ar: "حلوى محضرة بعناية.",
-      en: "A sweet treat prepared with care."
-    }
-  },
-
-  {
-    id: 6,
-    category: "starters",
-    price: 30,
-    image: "https://images.unsplash.com/photo-1547592180-85f173990554?auto=format&fit=crop&w=700&q=80",
-    name: {
-      fr: "Soupe du jour",
-      ar: "حساء اليوم",
-      en: "Soup of the Day"
-    },
-    description: {
-      fr: "Soupe maison selon les produits du jour.",
-      ar: "حساء منزلي حسب منتجات اليوم.",
-      en: "Homemade soup made with seasonal ingredients."
-    }
-  }
-];
-
-
-/* =========================================
-   4. CATÉGORIES ET ÉTAT DU MENU
-   ========================================= */
-
-const categoryKeys = [
-  "all",
-  "starters",
-  "mains",
-  "drinks",
-  "desserts"
-];
+const languageSelect = document.getElementById("language-select");
+const searchInput = document.getElementById("search");
+const menuGrid = document.getElementById("menu-grid");
+const emptyMessage = document.getElementById("empty-message");
+const categoryButtons = document.querySelectorAll(".category-button");
 
 let currentLanguage = "fr";
 let currentCategory = "all";
 
-
-/* =========================================
-   5. SÉLECTION DES ÉLÉMENTS HTML
-   ========================================= */
-
-const languageSelect =
-  document.getElementById("language-select");
-
-const categoryList =
-  document.getElementById("category-list");
-
-const categoryTitle =
-  document.getElementById("category-title");
-
-const menuGrid =
-  document.getElementById("menu-grid");
-
-const dishCount =
-  document.getElementById("dish-count");
-
-const emptyMessage =
-  document.getElementById("empty-message");
-
-
-/* =========================================
-   6. CHANGER LA LANGUE
-   ========================================= */
-
-function changeLanguage(language) {
-  if (!translations[language]) {
-    return;
-  }
-
-  currentLanguage = language;
-
+function translatePage() {
   const t = translations[currentLanguage];
 
   document.documentElement.lang = currentLanguage;
-  document.documentElement.dir =
-    currentLanguage === "ar" ? "rtl" : "ltr";
+  document.documentElement.dir = currentLanguage === "ar" ? "rtl" : "ltr";
+  document.body.dir = currentLanguage === "ar" ? "rtl" : "ltr";
 
-  // Traduire les textes possédant l'attribut data-i18n.
-  document.querySelectorAll("[data-i18n]").forEach(element => {
-    const key = element.dataset.i18n;
-    element.textContent = t[key];
+  document.title = currentLanguage === "ar"
+    ? "مطعم اللذة | قائمة الطعام"
+    : currentLanguage === "en"
+      ? "The Delight | Restaurant Menu"
+      : "Le Délice | Menu Restaurant";
+
+  document.getElementById("language-label").textContent = t.language;
+  document.querySelector(".brand").textContent = t.brand;
+  document.getElementById("subtitle").textContent = t.subtitle;
+  document.getElementById("title").textContent = t.title;
+  document.getElementById("description").textContent = t.description;
+  document.getElementById("explore").textContent = t.explore;
+  document.getElementById("menu-eyebrow").textContent = t.menuEyebrow;
+  document.getElementById("menu-title").textContent = t.menuTitle;
+  document.getElementById("menu-description").textContent = t.menuDescription;
+  searchInput.placeholder = t.search;
+  searchInput.setAttribute("aria-label", t.search);
+  emptyMessage.textContent = t.empty;
+  document.getElementById("footer-text").textContent = t.footer;
+document.getElementById("footer-brand").textContent =
+    currentLanguage === "ar" ? "مطعم اللذة" :
+    currentLanguage === "en" ? "The Delight" : "Le Délice";
+
+  categoryButtons.forEach((button) => {
+    const category = button.dataset.category;
+    button.textContent = t.categories[category];
+    button.classList.toggle("active", category === currentCategory);
   });
 
-  // Mettre à jour le nom du restaurant.
-  document.getElementById("restaurant-name").textContent =
-    restaurant.name;
-
-  document.getElementById("footer-name").textContent =
-    restaurant.name;
-
-  // Mettre à jour le titre de la catégorie.
-  updateCategoryTitle();
-
-  // Afficher les catégories et les plats dans la nouvelle langue.
-  renderCategories();
   renderDishes();
-
-  // Adapter le lien WhatsApp.
-  const phone = restaurant.whatsapp.replace(/\D/g, "");
-
-  document.getElementById("contact-link").href =
-    "https://wa.me/" + phone;
-
-  document.title =
-    restaurant.name + " | " + t["menu-title"];
 }
-
-
-/* =========================================
-   7. AFFICHER LES CATÉGORIES
-   ========================================= */
-
-function renderCategories() {
-  const t = translations[currentLanguage];
-
-  categoryList.replaceChildren();
-
-  categoryKeys.forEach(key => {
-    const button = document.createElement("button");
-
-    button.type = "button";
-    button.className = "category-button";
-
-    if (key === currentCategory) {
-      button.classList.add("active");
-    }
-
-    button.textContent = t.categories[key];
-
-    button.setAttribute(
-      "aria-pressed",
-      String(key === currentCategory)
-    );
-
-    button.addEventListener("click", () => {
-      currentCategory = key;
-      renderCategories();
-      updateCategoryTitle();
-      renderDishes();
-    });
-
-    categoryList.appendChild(button);
-  });
-}
-
-
-/* =========================================
-   8. METTRE À JOUR LE TITRE
-   ========================================= */
-
-function updateCategoryTitle() {
-  const t = translations[currentLanguage];
-
-  categoryTitle.textContent =
-    currentCategory === "all"
-      ? t.all
-      : t.categories[currentCategory];
-}
-
-
-/* =========================================
-   9. AFFICHER LES PLATS
-   ========================================= */
 
 function renderDishes() {
   const t = translations[currentLanguage];
+  const query = searchInput.value.trim().toLocaleLowerCase(currentLanguage);
+
+  const filteredDishes = t.dishes.filter((dish) => {
+    const matchesCategory =
+      currentCategory === "all" || dish.category === currentCategory;
+
+    const searchableText =
+      `${dish.name} ${dish.description}`.toLocaleLowerCase(currentLanguage);
+
+    const matchesSearch = searchableText.includes(query);
+
+    return matchesCategory && matchesSearch;
+  });
 
   menuGrid.replaceChildren();
 
-  const visibleDishes = dishes.filter(dish => {
-    return currentCategory === "all" ||
-           dish.category === currentCategory;
-  });
-
-  visibleDishes.forEach(dish => {
+  filteredDishes.forEach((dish) => {
     const card = document.createElement("article");
     card.className = "dish-card";
 
-    const image = document.createElement("img");
-    image.className = "dish-image";
-    image.src = dish.image;
-    image.alt = dish.name[currentLanguage];
-    image.loading = "lazy";
+    const visual = document.createElement("div");
+    visual.className = "dish-visual";
+    visual.setAttribute("aria-hidden", "true");
+    visual.textContent = dish.emoji;
 
-    // Montrer un fond neutre si une photo ne charge pas.
-    image.addEventListener("error", () => {
-      image.style.display = "none";
-    }, { once: true });
+    const info = document.createElement("div");
+    info.className = "dish-info";
 
-    const content = document.createElement("div");
-    content.className = "dish-content";
+    const name = document.createElement("h3");
+    name.textContent = dish.name;
+
+    const description = document.createElement("p");
+    description.textContent = dish.description;
+
+    const bottom = document.createElement("div");
+    bottom.className = "dish-bottom";
 
     const category = document.createElement("span");
     category.className = "dish-category";
     category.textContent = t.categories[dish.category];
 
-    const name = document.createElement("h3");
-    name.className = "dish-name";
-    name.textContent = dish.name[currentLanguage];
-
-    const description = document.createElement("p");
-    description.className = "dish-description";
-    description.textContent =
-      dish.description[currentLanguage];
-
-    const price = document.createElement("p");
+    const price = document.createElement("span");
     price.className = "dish-price";
+    price.textContent = `${dish.price} DH`;
 
-    price.textContent =
-      new Intl.NumberFormat(
-        currentLanguage === "ar" ? "ar-MA" : currentLanguage,
-        { maximumFractionDigits: 2 }
-      ).format(dish.price) + " DH";
-
-    content.append(
-      category,
-      name,
-      description,
-      price
-    );
-
-    card.append(image, content);
-    menuGrid.appendChild(card);
+    bottom.append(category, price);
+    info.append(name, description, bottom);
+    card.append(visual, info);
+    menuGrid.append(card);
   });
 
-  dishCount.textContent =
-    visibleDishes.length + " " + t.dishes;
+  emptyMessage.hidden = filteredDishes.length > 0;
+}
 
-  emptyMessage.hidden = visibleDishes.length !== 0;
+languageSelect.addEventListener("change", () => {
+  currentLanguage = languageSelect.value;
+  translatePage();
+});
+
+categoryButtons.forEach((button) => {
+  button.addEventListener("click", () => {
+    currentCategory = button.dataset.category;
+
+    categoryButtons.forEach((item) => {
+      item.classList.toggle("active", item === button);
+    });
+
+    renderDishes();
+  });
+});
+
+searchInput.addEventListener("input", renderDishes);
+
+document.getElementById("year").textContent = new Date().getFullYear();
+
+translatePage();
+
+/* ===== Administration du restaurant ===== */
+
+const adminPanel = document.getElementById("admin-panel");
+const offersSection = document.getElementById("offers-section");
+const offersGrid = document.getElementById("offers-grid");
+
+let offers = [];
+
+
+
+function saveRestaurantData() {
+  try {
+    localStorage.setItem(
+      "delice-menu-data",
+      JSON.stringify({ translations, offers })
+    );
+
+    syncDishesToSupabase().catch((error) => {
+      console.error("Erreur Supabase :", error);
+      alert("Les modifications sont enregistrées localement, mais pas encore dans Supabase.");
+    });
+
+    return true;
+  } catch (error) {
+    console.error("Erreur de sauvegarde :", error);
+    alert("Impossible d'enregistrer les modifications.");
+    return false;
+  }
+}
+
+async function syncDishesToSupabase() {
+  const dishes = translations.fr.dishes.map((dish) => {
+    const dishAr = translations.ar.dishes.find((item) => item.id === dish.id);
+    const dishEn = translations.en.dishes.find((item) => item.id === dish.id);
+
+    return {
+      id: dish.id,
+      name: dish.name,
+      description: dish.description,
+      category: dish.category,
+      price: dish.price,
+      emoji: dish.emoji || "🍽️",
+      name_ar: dishAr?.name || "",
+      description_ar: dishAr?.description || "",
+      name_en: dishEn?.name || "",
+      description_en: dishEn?.description || "",
+      available: true
+    };
+  });
+
+  const { error } = await supabaseClient
+    .from("dishes")
+    .upsert(dishes, { onConflict: "id" });
+
+  if (error) throw error;
 }
 
 
-/* =========================================
-   10. DÉMARRAGE DU SITE
-   ========================================= */
 
-languageSelect.addEventListener("change", event => {
-  changeLanguage(event.target.value);
+function loadRestaurantData() {
+  try {
+    const saved = localStorage.getItem("delice-menu-data");
+    if (!saved) return;
+
+    const data = JSON.parse(saved);
+
+    if (data.translations) {
+      ["fr", "ar", "en"].forEach((lang) => {
+        if (Array.isArray(data.translations[lang]?.dishes)) {
+          translations[lang].dishes = data.translations[lang].dishes;
+        }
+      });
+    }
+
+    if (Array.isArray(data.offers)) {
+      offers = data.offers;
+    }
+  } catch (error) {
+    console.error("Erreur de chargement du menu :", error);
+  }
+}
+
+async function loadDishesFromSupabase() {
+  try {
+    const { data, error } = await supabaseClient
+      .from("dishes")
+      .select("*");
+
+    if (error) throw error;
+
+    if (!Array.isArray(data) || data.length === 0) {
+      console.warn("Aucun plat trouvé dans Supabase.");
+      return;
+    }
+
+    translations.fr.dishes = data.map((dish) => ({
+      id: dish.id,
+      category: dish.category,
+      emoji: dish.emoji || "🍽️",
+      price: Number(dish.price),
+      name: dish.name || "",
+      description: dish.description || ""
+    }));
+
+    translations.ar.dishes = data.map((dish) => ({
+      id: dish.id,
+      category: dish.category,
+      emoji: dish.emoji || "🍽️",
+      price: Number(dish.price),
+      name: dish.name_ar || "",
+      description: dish.description_ar || ""
+    }));
+
+    translations.en.dishes = data.map((dish) => ({
+      id: dish.id,
+      category: dish.category,
+      emoji: dish.emoji || "🍽️",
+      price: Number(dish.price),
+      name: dish.name_en || "",
+      description: dish.description_en || ""
+    }));
+
+    console.log("✅ Plats chargés depuis Supabase :", data.length);
+
+    translatePage();
+    renderAdminDishes();
+  } catch (error) {
+    console.error("Erreur de chargement Supabase :", error);
+  }
+}
+
+function openAdmin() {
+  adminPanel.hidden = false;
+  renderAdminDishes();
+  renderAdminOffers();
+  adminPanel.scrollIntoView({ behavior: "smooth", block: "start" });
+}
+const adminOpenButton = document.getElementById("admin-open");
+const adminCloseButton = document.getElementById("admin-close");
+
+if (adminOpenButton) {
+  adminOpenButton.addEventListener("click", openAdmin);
+}
+
+if (adminCloseButton) {
+  adminCloseButton.addEventListener("click", () => {
+    adminPanel.hidden = true;
+  });
+}
+
+function renderAdminDishes() {
+  const list = document.getElementById("admin-dishes-list");
+  list.replaceChildren();
+
+  translations.fr.dishes.forEach((dish) => {
+    const item = document.createElement("div");
+    item.className = "admin-list-item";
+
+    const info = document.createElement("div");
+    const name = document.createElement("strong");
+    name.textContent = `${dish.emoji} ${dish.name}`;
+
+    const details = document.createElement("p");
+    details.textContent = `${dish.price} DH`;
+
+    info.append(name, details);
+
+    const actions = document.createElement("div");
+    actions.className = "admin-list-actions";
+
+    const edit = document.createElement("button");
+    edit.type = "button";
+    edit.className = "admin-edit";
+    edit.textContent = "✏️ Modifier";
+    edit.addEventListener("click", () => editDish(dish.id));
+
+    const remove = document.createElement("button");
+    remove.type = "button";
+    remove.className = "admin-delete";
+    remove.textContent = "🗑️ Supprimer";
+    remove.addEventListener("click", () => deleteDish(dish.id));
+
+    actions.append(edit, remove);
+    item.append(info, actions);
+    list.append(item);
+  });
+}
+
+function editDish(id) {
+  const dishFr = translations.fr.dishes.find((dish) => dish.id === id);
+  const dishAr = translations.ar.dishes.find((dish) => dish.id === id);
+  const dishEn = translations.en.dishes.find((dish) => dish.id === id);
+
+  if (!dishFr || !dishAr || !dishEn) {
+    alert("Ce plat n'existe pas dans les trois langues.");
+    return;
+  }
+
+  document.getElementById("dish-id").value = id;
+  document.getElementById("dish-category").value = dishFr.category;
+  document.getElementById("dish-emoji").value = dishFr.emoji;
+  document.getElementById("dish-price").value = dishFr.price;
+
+  document.getElementById("dish-name-fr").value = dishFr.name;
+  document.getElementById("dish-desc-fr").value = dishFr.description;
+
+  document.getElementById("dish-name-ar").value = dishAr.name;
+  document.getElementById("dish-desc-ar").value = dishAr.description;
+
+  document.getElementById("dish-name-en").value = dishEn.name;
+  document.getElementById("dish-desc-en").value = dishEn.description;
+
+  document.getElementById("dish-form").scrollIntoView({
+    behavior: "smooth",
+    block: "start"
+  });
+}
+
+function resetDishForm() {
+  document.getElementById("dish-form").reset();
+  document.getElementById("dish-id").value = "";
+  document.getElementById("dish-emoji").value = "🍽️";
+}
+
+document.getElementById("dish-reset").addEventListener("click", resetDishForm);
+
+document.getElementById("dish-form").addEventListener("submit", (event) => {
+  event.preventDefault();
+
+  const idInput = document.getElementById("dish-id").value;
+  const id = idInput
+    ? Number(idInput)
+    : Math.max(0, ...translations.fr.dishes.map((dish) => dish.id)) + 1;
+
+  const category = document.getElementById("dish-category").value;
+  const emoji = document.getElementById("dish-emoji").value.trim() || "🍽️";
+  const price = Number(document.getElementById("dish-price").value);
+
+  if (!Number.isFinite(price) || price < 0) {
+    alert("Veuillez entrer un prix valide.");
+    return;
+  }
+
+  const values = {
+    fr: {
+      name: document.getElementById("dish-name-fr").value.trim(),
+      description: document.getElementById("dish-desc-fr").value.trim()
+    },
+    ar: {
+      name: document.getElementById("dish-name-ar").value.trim(),
+      description: document.getElementById("dish-desc-ar").value.trim()
+    },
+    en: {
+      name: document.getElementById("dish-name-en").value.trim(),
+      description: document.getElementById("dish-desc-en").value.trim()
+    }
+  };
+
+  if (Object.values(values).some(
+    (value) => !value.name || !value.description
+  )) {
+    alert("Complétez le nom et la description dans les trois langues.");
+    return;
+  }
+
+  ["fr", "ar", "en"].forEach((lang) => {
+    const dish = {
+      id,
+      category,
+      emoji,
+      price,
+      name: values[lang].name,
+      description: values[lang].description
+    };
+
+    const index = translations[lang].dishes.findIndex(
+      (item) => item.id === id
+    );
+
+    if (index >= 0) {
+      translations[lang].dishes[index] = dish;
+    } else {
+      translations[lang].dishes.push(dish);
+    }
+  });
+
+  if (!saveRestaurantData()) return;
+
+  resetDishForm();
+  translatePage();
+  renderAdminDishes();
+  alert("Plat enregistré avec succès !");
 });
 
-document.getElementById("current-year").textContent =
-  new Date().getFullYear();
+function deleteDish(id) {
+  if (!confirm("Voulez-vous vraiment supprimer ce plat ?")) return;
 
-// Afficher le menu en français au premier chargement.
-changeLanguage("fr");
+  ["fr", "ar", "en"].forEach((lang) => {
+    translations[lang].dishes = translations[lang].dishes.filter(
+      (dish) => dish.id !== id
+    );
+  });
+
+  if (!saveRestaurantData()) return;
+
+  translatePage();
+  renderAdminDishes();
+}
+
+function renderAdminOffers() {
+  const list = document.getElementById("admin-offers-list");
+  list.replaceChildren();
+
+  offers.forEach((offer) => {
+    const item = document.createElement("div");
+    item.className = "admin-list-item";
+
+    const info = document.createElement("div");
+    const name = document.createElement("strong");
+    name.textContent = `🎉 ${offer.fr.name}`;
+
+    const details = document.createElement("p");
+    details.textContent = `${offer.price} DH`;
+
+    info.append(name, details);
+
+    const actions = document.createElement("div");
+    actions.className = "admin-list-actions";
+
+    const edit = document.createElement("button");
+    edit.type = "button";
+    edit.className = "admin-edit";
+    edit.textContent = "✏️ Modifier";
+    edit.addEventListener("click", () => editOffer(offer.id));
+
+    const remove = document.createElement("button");
+    remove.type = "button";
+    remove.className = "admin-delete";
+    remove.textContent = "🗑️ Supprimer";
+    remove.addEventListener("click", () => deleteOffer(offer.id));
+
+    actions.append(edit, remove);
+    item.append(info, actions);
+    list.append(item);
+  });
+}
+
+function renderOffers() {
+  const lang = currentLanguage;
+  offersGrid.replaceChildren();
+
+  offers.forEach((offer) => {
+    const card = document.createElement("article");
+    card.className = "offer-card";
+
+    const name = document.createElement("h3");
+    name.textContent = `🎉 ${offer[lang].name}`;
+
+    const description = document.createElement("p");
+    description.textContent = offer[lang].description;
+
+    const price = document.createElement("div");
+    price.className = "offer-price";
+    price.textContent = `${offer.price} DH`;
+
+    card.append(name, description, price);
+    offersGrid.append(card);
+  });
+
+  offersSection.hidden = offers.length === 0;
+}
+
+function resetOfferForm() {
+  document.getElementById("offer-form").reset();
+  document.getElementById("offer-id").value = "";
+}
+
+document.getElementById("offer-reset").addEventListener("click", resetOfferForm);
+
+document.getElementById("offer-form").addEventListener("submit", (event) => {
+  event.preventDefault();
+
+  const idInput = document.getElementById("offer-id").value;
+  const id = idInput
+    ? Number(idInput)
+    : Math.max(0, ...offers.map((offer) => offer.id)) + 1;
+
+  const price = Number(document.getElementById("offer-price").value);
+
+  if (!Number.isFinite(price) || price < 0) {
+    alert("Veuillez entrer un prix valide.");
+    return;
+  }
+
+  const offer = {
+    id,
+    price,
+    fr: {
+      name: document.getElementById("offer-name-fr").value.trim(),
+      description: document.getElementById("offer-desc-fr").value.trim()
+    },
+    ar: {
+      name: document.getElementById("offer-name-ar").value.trim(),
+      description: document.getElementById("offer-desc-ar").value.trim()
+    },
+    en: {
+      name: document.getElementById("offer-name-en").value.trim(),
+      description: document.getElementById("offer-desc-en").value.trim()
+    }
+  };
+
+  if (["fr", "ar", "en"].some(
+    (lang) => !offer[lang].name || !offer[lang].description
+  )) {
+    alert("Complétez le nom et la description de l'offre dans les trois langues.");
+    return;
+  }
+
+  const index = offers.findIndex((item) => item.id === id);
+
+  if (index >= 0) {
+    offers[index] = offer;
+  } else {
+    offers.push(offer);
+  }
+
+  if (!saveRestaurantData()) return;
+
+  resetOfferForm();
+  renderOffers();
+  renderAdminOffers();
+  alert("Offre enregistrée avec succès !");
+});
+
+function editOffer(id) {
+  const offer = offers.find((item) => item.id === id);
+  if (!offer) return;
+
+  document.getElementById("offer-id").value = offer.id;
+  document.getElementById("offer-price").value = offer.price;
+
+  ["fr", "ar", "en"].forEach((lang) => {
+    document.getElementById(`offer-name-${lang}`).value = offer[lang].name;
+    document.getElementById(`offer-desc-${lang}`).value = offer[lang].description;
+  });
+
+  document.getElementById("offer-form").scrollIntoView({
+    behavior: "smooth",
+    block: "start"
+  });
+}
+
+function deleteOffer(id) {
+  if (!confirm("Voulez-vous vraiment supprimer cette offre ?")) return;
+
+  offers = offers.filter((offer) => offer.id !== id);
+
+  if (!saveRestaurantData()) return;
+
+  renderOffers();
+  renderAdminOffers();
+}
+
+/* Charger les données enregistrées, puis actualiser le menu */
+loadRestaurantData();
+loadDishesFromSupabase();
+const originalTranslatePage = translatePage;
+
+translatePage = function () {
+  originalTranslatePage();
+  renderOffers();
+};
+
+translatePage();
+
+
+const loginOverlay = document.getElementById("admin-login");
+
+document.getElementById("admin-login-open").addEventListener("click", () => {
+  document.getElementById("admin-login-form").hidden = false;
+  loginOverlay.hidden = false;
+});
+
+
+document.getElementById("admin-login-close").addEventListener("click", () => {
+  loginOverlay.hidden = true;
+});
+
+
+
+const MANAGER_UID = "8d30bbb4-4b6f-4002-aff1-3cbd07be405e";
+
+document.getElementById("admin-login-form")?.addEventListener("submit", async (event) => {
+  event.preventDefault();
+
+  const errorElement = document.getElementById("login-error");
+  errorElement.textContent = "";
+
+  const email = document.getElementById("admin-email").value.trim();
+  const password = document.getElementById("admin-password").value;
+
+  try {
+    const { data, error } = await supabaseClient.auth.signInWithPassword({
+      email,
+      password
+    });
+
+    if (error) {
+      errorElement.textContent = "E-mail ou mot de passe incorrect.";
+      return;
+    }
+
+    if (data.user?.id !== MANAGER_UID) {
+      await supabaseClient.auth.signOut();
+      errorElement.textContent = "Ce compte n'est pas autorisé.";
+      return;
+    }
+
+   document.getElementById("admin-login-form").hidden = false;
+loginOverlay.hidden = true;
+
+    const adminPanel = document.getElementById("admin-panel");
+    if (adminPanel) {
+      adminPanel.hidden = false;
+      adminPanel.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+
+    if (typeof renderAdminDishes === "function") {
+      renderAdminDishes();
+    }
+
+    if (typeof renderAdminOffers === "function") {
+      renderAdminOffers();
+    }
+
+    console.log("Connexion réussie.");
+  } catch (err) {
+    console.error(err);
+    errorElement.textContent = "Erreur de connexion. Réessayez.";
+  }
+});
