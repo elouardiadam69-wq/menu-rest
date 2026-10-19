@@ -991,7 +991,7 @@ if (orderForm) {
         : "Votre commande de livraison a été envoyée !";
     } catch (error) {
       console.error("Erreur commande :", error);
-alert(JSON.stringify(error, null, 2));
+     alert(JSON.stringify(error, null, 2));
       message.textContent =
         "Impossible d'envoyer la commande. Vérifiez Supabase et réessayez.";
     } finally {
