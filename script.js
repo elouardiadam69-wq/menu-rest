@@ -157,6 +157,97 @@ document.getElementById("footer-brand").textContent =
   renderDishes();
 }
 
+const cart = new Map();
+
+function addToCart(dish) {
+  const key = `${dish.category}:${dish.name}`;
+  const current = cart.get(key);
+
+  if (current) {
+    current.quantity += 1;
+  } else {
+    cart.set(key, {
+      name: dish.name,
+      price: Number(dish.price),
+      quantity: 1
+    });
+  }
+
+  renderCart();
+}
+
+function renderCart() {
+  const container = document.getElementById("cart-items");
+  const totalElement = document.getElementById("cart-total");
+
+  if (!container || !totalElement) return;
+
+  container.replaceChildren();
+  let total = 0;
+
+  if (cart.size === 0) {
+    const empty = document.createElement("p");
+    empty.className = "empty-message";
+    empty.textContent = "Votre panier est vide.";
+    container.append(empty);
+  }
+
+  cart.forEach((item, key) => {
+    total += item.price * item.quantity;
+
+    const row = document.createElement("div");
+    row.className = "cart-item";
+
+    const info = document.createElement("div");
+    info.className = "cart-item-info";
+
+    const name = document.createElement("strong");
+    name.textContent = item.name;
+
+    const detail = document.createElement("small");
+    detail.textContent =
+      `${item.price} DH × ${item.quantity} = ${item.price * item.quantity} DH`;
+
+    info.append(name, detail);
+
+    const actions = document.createElement("div");
+    actions.className = "cart-item-actions";
+
+    const minus = document.createElement("button");
+    minus.type = "button";
+    minus.textContent = "−";
+    minus.setAttribute("aria-label", `Diminuer ${item.name}`);
+
+    minus.addEventListener("click", () => {
+      if (item.quantity > 1) {
+        item.quantity -= 1;
+      } else {
+        cart.delete(key);
+      }
+      renderCart();
+    });
+
+    const quantity = document.createElement("span");
+    quantity.textContent = item.quantity;
+
+    const plus = document.createElement("button");
+    plus.type = "button";
+    plus.textContent = "+";
+    plus.setAttribute("aria-label", `Ajouter ${item.name}`);
+
+    plus.addEventListener("click", () => {
+      item.quantity += 1;
+      renderCart();
+    });
+
+    actions.append(minus, quantity, plus);
+    row.append(info, actions);
+    container.append(row);
+  });
+
+  totalElement.textContent = total.toFixed(2);
+}
+
 function renderDishes() {
   const t = translations[currentLanguage];
   const query = searchInput.value.trim().toLocaleLowerCase(currentLanguage);
@@ -204,8 +295,19 @@ function renderDishes() {
     price.className = "dish-price";
     price.textContent = `${dish.price} DH`;
 
-    bottom.append(category, price);
-    info.append(name, description, bottom);
+   
+const addButton = document.createElement("button");
+addButton.type = "button";
+addButton.className = "add-to-cart-button";
+addButton.textContent = "Ajouter au panier";
+
+addButton.addEventListener("click", () => {
+  addToCart(dish);
+});
+
+bottom.append(category, price);
+info.append(name, description, bottom, addButton);
+
     card.append(visual, info);
     menuGrid.append(card);
   });
@@ -777,3 +879,278 @@ loginOverlay.hidden = true;
     errorElement.textContent = "Erreur de connexion. Réessayez.";
   }
 });
+
+
+const orderTypeSelect = document.getElementById("order-type");
+const tableField = document.getElementById("table-field");
+const addressField = document.getElementById("address-field");
+const tableSelect = document.getElementById("order-table");
+const addressInput = document.getElementById("order-address");
+
+function updateOrderFields() {
+  const type = orderTypeSelect.value;
+  const isTable = type === "sur_place";
+  const isDelivery = type === "livraison";
+
+  tableField.hidden = !isTable;
+  addressField.hidden = !isDelivery;
+
+  tableSelect.disabled = !isTable;
+  tableSelect.required = isTable;
+
+  addressInput.disabled = !isDelivery;
+  addressInput.required = isDelivery;
+}
+
+orderTypeSelect.addEventListener("change", updateOrderFields);
+updateOrderFields();
+
+const orderForm = document.getElementById("order-form");
+
+if (orderForm) {
+  orderForm.addEventListener("submit", async (event) => {
+    event.preventDefault();
+
+    const message = document.getElementById("order-message");
+    const submitButton = orderForm.querySelector('button[type="submit"]');
+
+    if (cart.size === 0) {
+      message.textContent = "Votre panier est vide.";
+      return;
+    }
+
+    const orderType = orderTypeSelect.value;
+    const customerName = document.getElementById("order-name").value.trim();
+    const phone = document.getElementById("order-phone").value.trim();
+    const notes = document.getElementById("order-notes").value.trim();
+
+    if (!customerName || !phone) {
+      message.textContent = "Veuillez remplir votre nom et téléphone.";
+      return;
+    }
+
+    let tableNumber = null;
+    let address = null;
+
+    if (orderType === "sur_place") {
+      tableNumber = Number(tableSelect.value);
+
+      if (!Number.isInteger(tableNumber) || tableNumber < 1) {
+        message.textContent = "Veuillez choisir votre numéro de table.";
+        return;
+      }
+    } else if (orderType === "livraison") {
+      address = addressInput.value.trim();
+
+      if (address.length < 5) {
+        message.textContent = "Veuillez saisir une adresse valide.";
+        return;
+      }
+    } else {
+      message.textContent = "Veuillez choisir le type de commande.";
+      return;
+    }
+
+    const items = Array.from(cart.values()).map((item) => ({
+      name: item.name,
+      price: item.price,
+      quantity: item.quantity
+    }));
+
+    const total = items.reduce(
+      (sum, item) => sum + item.price * item.quantity,
+      0
+    );
+
+    submitButton.disabled = true;
+    message.textContent = "Envoi de votre commande...";
+
+    try {
+      const { error } = await supabaseClient
+        .from("orders")
+        .insert([{
+          order_type: orderType,
+          customer_name: customerName,
+          phone,
+          address,
+          table_number: tableNumber,
+          items,
+          total,
+          notes: notes || null
+        }]);
+
+      if (error) throw error;
+
+      cart.clear();
+      renderCart();
+      orderForm.reset();
+      updateOrderFields();
+
+      message.textContent = orderType === "sur_place"
+        ? `Commande envoyée ! Table ${tableNumber}.`
+        : "Votre commande de livraison a été envoyée !";
+    } catch (error) {
+      console.error("Erreur commande :", error);
+      message.textContent =
+        "Impossible d'envoyer la commande. Vérifiez Supabase et réessayez.";
+    } finally {
+      submitButton.disabled = false;
+    }
+  });
+}
+
+const adminOrdersList = document.getElementById("admin-orders-list");
+const ordersMessage = document.getElementById("orders-message");
+const refreshOrdersButton = document.getElementById("refresh-orders");
+
+
+async function loadAdminOrders() {
+  if (!adminOrdersList) return;
+
+  adminOrdersList.textContent = "Chargement des commandes...";
+
+  try {
+    const { data: orders, error } = await supabaseClient
+      .from("orders")
+      .select("id, order_type, customer_name, phone, address, table_number, items, total, notes, status, created_at")
+      .order("created_at", { ascending: false });
+
+    if (error) throw error;
+
+    adminOrdersList.replaceChildren();
+
+    if (!orders || orders.length === 0) {
+      adminOrdersList.textContent = "Aucune commande pour le moment.";
+      return;
+    }
+
+    orders.forEach((order) => {
+      const card = document.createElement("article");
+      card.className = "admin-order-card";
+
+      const title = document.createElement("h4");
+
+      title.textContent = order.order_type === "livraison"
+        ? `Commande #${order.id} — Livraison`
+        : `Commande #${order.id} — Sur place — Table ${order.table_number}`;
+
+      card.appendChild(title);
+
+      const customer = document.createElement("p");
+      customer.textContent =
+        `Client : ${order.customer_name} | Tél. : ${order.phone}`;
+      card.appendChild(customer);
+
+      if (order.order_type === "livraison") {
+        const address = document.createElement("p");
+        address.textContent = `Adresse de livraison : ${order.address || "Non renseignée"}`;
+        card.appendChild(address);
+      }
+
+      const itemsList = document.createElement("ul");
+
+      if (Array.isArray(order.items)) {
+        order.items.forEach((item) => {
+          const li = document.createElement("li");
+          li.textContent =
+            `${item.name} × ${item.quantity} — ${(Number(item.price) * Number(item.quantity)).toFixed(2)} DH`;
+          itemsList.appendChild(li);
+        });
+      }
+
+      card.appendChild(itemsList);
+
+      const total = document.createElement("p");
+      total.textContent = `Total : ${Number(order.total).toFixed(2)} DH`;
+      card.appendChild(total);
+
+      if (order.notes) {
+        const notes = document.createElement("p");
+        notes.textContent = `Remarque : ${order.notes}`;
+        card.appendChild(notes);
+      }
+
+      const statusLabel = document.createElement("label");
+      statusLabel.textContent = "État de la commande : ";
+
+      const statusSelect = document.createElement("select");
+statusSelect.style.display = "block";
+statusSelect.style.width = "100%";
+statusSelect.style.minHeight = "42px";
+statusSelect.style.color = "#214735";
+statusSelect.style.backgroundColor = "#ffffff";
+statusSelect.style.border = "1px solid #d5dcd5";
+
+statusSelect.style.setProperty("color", "#214735", "important");
+statusSelect.style.setProperty("background-color", "#ffffff", "important");
+      [
+        ["pending", "En attente"],
+        ["preparing", "En préparation"],
+        ["ready", "Prête"],
+        ["completed", "Terminée"],
+        ["cancelled", "Annulée"]
+      ].forEach(([value, label]) => {
+        const option = document.createElement("option");
+        option.value = value;
+        option.textContent = label;
+        option.style.color = "#214735";
+option.style.backgroundColor = "#ffffff";
+
+        statusSelect.appendChild(option);
+      });
+
+      statusSelect.value = order.status || "pending";
+
+      const saveStatusButton = document.createElement("button");
+      saveStatusButton.type = "button";
+      saveStatusButton.className = "admin-save";
+      saveStatusButton.textContent = "Enregistrer l'état";
+
+      saveStatusButton.addEventListener("click", async () => {
+        saveStatusButton.disabled = true;
+
+        try {
+          const { error: updateError } = await supabaseClient
+            .from("orders")
+            .update({ status: statusSelect.value })
+            .eq("id", order.id);
+
+          if (updateError) throw updateError;
+
+          if (ordersMessage) {
+            ordersMessage.textContent = `Commande #${order.id} mise à jour.`;
+          }
+        } catch (error) {
+          console.error("Erreur de statut :", error);
+
+          if (ordersMessage) {
+            ordersMessage.textContent =
+              "Impossible de modifier l'état. Vérifiez les permissions Supabase.";
+          }
+        } finally {
+          saveStatusButton.disabled = false;
+        }
+      });
+
+      statusLabel.appendChild(statusSelect);
+      card.appendChild(statusLabel);
+      card.appendChild(document.createElement("br"));
+      card.appendChild(saveStatusButton);
+
+      adminOrdersList.appendChild(card);
+    });
+
+    if (ordersMessage) {
+      ordersMessage.textContent = `${orders.length} commande(s) affichée(s).`;
+    }
+  } catch (error) {
+    console.error("Erreur de chargement des commandes :", error);
+    adminOrdersList.textContent =
+      "Impossible de charger les commandes. Vérifiez la connexion et les permissions Supabase.";
+  }
+}
+
+
+if (refreshOrdersButton) {
+  refreshOrdersButton.addEventListener("click", loadAdminOrders);
+}

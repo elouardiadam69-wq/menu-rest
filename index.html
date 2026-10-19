@@ -102,6 +102,112 @@
     </p>
   </main>
 
+<!-- Section de commande -->
+<section id="order-section" class="menu-section">
+  <div class="section-heading">
+    <p class="eyebrow">Le Délice</p>
+    <h2>Votre panier</h2>
+    <p>Choisissez vos plats et préparez votre commande.</p>
+  </div>
+
+  <div class="order-layout">
+    <div class="order-cart">
+      <h3>🛒 Mon panier</h3>
+
+      <div id="cart-items">
+        <p class="empty-message">Votre panier est vide.</p>
+      </div>
+
+      <div class="cart-total">
+        <strong>Total :</strong>
+        <strong><span id="cart-total">0</span> DH</strong>
+      </div>
+    </div>
+
+    <div class="order-form-card">
+<h3>🛍️ Comment souhaitez-vous commander ?</h3>
+      <form id="order-form">
+<label for="order-type">Type de commande</label>
+<select id="order-type" required>
+  <option value="">-- Choisissez une option --</option>
+  <option value="sur_place">Commander sur place</option>
+  <option value="livraison">Commander en livraison</option>
+</select>
+
+        <label>
+          Nom complet
+          <input
+            type="text"
+            id="order-name"
+            required
+            maxlength="100"
+            autocomplete="name"
+          >
+        </label>
+
+        <label>
+          Numéro de téléphone
+          <input
+            type="tel"
+            id="order-phone"
+            required
+            maxlength="30"
+            autocomplete="tel"
+          >
+        </label>
+
+     
+<div id="table-field" hidden>
+  <label for="order-table">
+    Numéro de table
+    <select id="order-table" disabled>
+      <option value="">-- Choisissez votre table --</option>
+      <option value="1">Table 1</option>
+      <option value="2">Table 2</option>
+      <option value="3">Table 3</option>
+      <option value="4">Table 4</option>
+      <option value="5">Table 5</option>
+      <option value="6">Table 6</option>
+      <option value="7">Table 7</option>
+      <option value="8">Table 8</option>
+      <option value="9">Table 9</option>
+      <option value="10">Table 10</option>
+    </select>
+  </label>
+</div>
+
+<div id="address-field" hidden>
+  <label for="order-address">
+    Adresse de livraison
+    <textarea
+      id="order-address"
+      maxlength="500"
+      rows="3"
+      disabled
+    ></textarea>
+  </label>
+</div>
+  
+
+<label for="order-notes">
+  Remarque (facultatif)
+  <textarea
+    id="order-notes"
+    maxlength="500"
+    rows="2"
+  ></textarea>
+</label>
+
+<button type="submit" class="primary-button">
+  Confirmer la commande
+</button>
+
+<p id="order-message" role="status" aria-live="polite"></p>
+</form>
+</div>
+</div>
+</section>
+
   <footer class="footer">
 <section id="admin-panel" class="admin-panel" hidden>
   <div class="admin-header">
@@ -210,6 +316,22 @@
 
   <h3>🏷️ Offres existantes</h3>
   <div id="admin-offers-list" class="admin-list"></div>
+<hr>
+
+<h3>🛎️ Commandes des clients</h3>
+
+<div class="admin-actions">
+  <button id="refresh-orders" type="button" class="admin-save">
+    🔄 Actualiser les commandes
+  </button>
+</div>
+
+<p id="orders-message" role="status" aria-live="polite"></p>
+
+<div id="admin-orders-list" class="admin-list">
+  <p>Les commandes apparaîtront ici.</p>
+</div>
+
 </section>
 
     <p id="footer-text">Fait avec ❤️ pour les amoureux de la cuisine.</p>

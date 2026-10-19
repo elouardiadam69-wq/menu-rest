@@ -662,3 +662,232 @@ body[dir="rtl"] .dish-bottom {
   color: black;
   border-radius: 15px;
 }
+/* Commande et panier */
+.order-layout {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+  align-items: start;
+}
+
+.order-cart,
+.order-form-card {
+  padding: 24px;
+  border: 1px solid #eeece4;
+  border-radius: 15px;
+  background: var(--white);
+  box-shadow: var(--shadow);
+}
+
+.order-cart h3,
+.order-form-card h3 {
+  margin-top: 0;
+  color: var(--green);
+}
+
+.cart-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 0;
+  border-bottom: 1px solid #eeece4;
+}
+
+.cart-item-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.cart-item-info strong {
+  display: block;
+  color: var(--green);
+}
+
+.cart-item-info small {
+  color: var(--muted);
+}
+
+.cart-item-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.cart-item-actions button {
+  width: 32px;
+  height: 32px;
+  border: 0;
+  border-radius: 7px;
+  background: #e8eee8;
+  color: var(--green);
+  cursor: pointer;
+  font-weight: 800;
+}
+
+.cart-total {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  margin-top: 20px;
+  padding-top: 15px;
+  border-top: 2px solid #e9e6de;
+  color: var(--green);
+  font-size: 1.1rem;
+}
+
+.order-form-card form {
+  display: grid;
+  gap: 14px;
+}
+
+.order-form-card label {
+  display: grid;
+  gap: 6px;
+  font-weight: 600;
+  font-size: 0.92rem;
+}
+
+.order-form-card input,
+.order-form-card textarea {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #d9ddd5;
+  border-radius: 8px;
+  background: #fff;
+  color: var(--text);
+}
+
+.order-form-card input:focus,
+.order-form-card textarea:focus {
+  outline: 2px solid var(--gold);
+  border-color: var(--green);
+}
+
+.order-form-card .primary-button {
+  border: 0;
+  cursor: pointer;
+}
+
+#order-message {
+  margin: 0;
+  font-size: 0.9rem;
+}
+
+@media (max-width: 700px) {
+  .order-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .order-cart,
+  .order-form-card {
+    padding: 18px;
+  }
+}
+
+.add-to-cart-button {
+  display: block;
+  width: 100%;
+  margin-top: 14px;
+  padding: 11px 14px;
+  border: 0;
+  border-radius: 8px;
+  background: var(--green);
+  color: white;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.2s, transform 0.2s;
+}
+
+.add-to-cart-button:hover {
+  background: var(--green-light);
+  transform: translateY(-1px);
+}
+
+/* Correction des couleurs dans les commandes Admin */
+.admin-order-card select,
+#admin-orders-list select {
+  color: #214735 !important;
+  background-color: #ffffff !important;
+  border: 1px solid #214735 !important;
+  opacity: 1 !important;
+  -webkit-text-fill-color: #214735 !important;
+}
+
+.admin-order-card select option,
+#admin-orders-list select option {
+  color: #214735 !important;
+  background-color: #ffffff !important;
+}
+
+/* Couleurs du menu de statut des commandes Admin */
+#admin-orders-list select {
+  color: #214735 !important;
+  background-color: #ffffff !important;
+  -webkit-text-fill-color: #214735 !important;
+  opacity: 1 !important;
+  appearance: auto !important;
+}
+
+#admin-orders-list select option {
+  color: #214735 !important;
+  background-color: #ffffff !important;
+}
+
+/* Force les couleurs du menu de statut */
+#admin-orders-list select,
+#admin-orders-list select:focus,
+#admin-orders-list select option {
+  color: #214735 !important;
+  background-color: #ffffff !important;
+  -webkit-text-fill-color: #214735 !important;
+  text-shadow: none !important;
+  opacity: 1 !important;
+  font-weight: 600 !important;
+  filter: none !important;
+}
+/* Correction de la couleur du texte dans l'administration */
+.admin-panel,
+.admin-panel h1,
+.admin-panel h2,
+.admin-panel h3,
+.admin-panel p,
+.admin-panel span,
+.admin-panel label,
+.admin-panel strong,
+.admin-order-card,
+.admin-order-card * {
+  color: #26342b !important;
+  -webkit-text-fill-color: #26342b !important;
+}
+
+/* Garder les boutons avec un texte lisible */
+.admin-panel button {
+  -webkit-text-fill-color: inherit;
+}
+
+/* Menus déroulants des commandes */
+.admin-panel select,
+.admin-panel select option {
+  color: #26342b !important;
+  -webkit-text-fill-color: #26342b !important;
+  background-color: #ffffff !important;
+}
+/* Correction des boutons de commande sur mobile */
+@media (max-width: 540px) {
+  .dish-card .add-to-cart-button {
+    display: block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    position: relative !important;
+    width: 100% !important;
+    min-height: 44px;
+    z-index: 5;
+  }
+
+  .dish-card .dish-info {
+    display: block !important;
+    visibility: visible !important;
+    overflow: visible !important;
+  }
+}
