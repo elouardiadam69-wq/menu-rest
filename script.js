@@ -967,14 +967,15 @@ if (orderForm) {
 
     try {
       const { error } = await supabaseClient
-      
+
 const { data: sessionData } = await supabaseClient.auth.getSession();
 
 console.log(
-  "Statut utilisateur :",
-  sessionData.session ? "authenticated" : "anon"
-);
-
+   "Statut utilisateur :",
+    sessionData.session ? "authenticated" : "anon"
+  );
+const { error } = await supabaseClient
+.from("orders")
         .from("orders")
         .insert([{
           order_type: orderType,
